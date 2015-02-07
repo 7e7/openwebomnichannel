@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+		<title>Booker&amp;&amp;Arrays&amp;&amp;IE8&amp;&amp;Standards&amp;&amp;learningsMakeBenefitUITeam</h1></title>
 
 		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 		<meta name="author" content="Hakim El Hattab">
@@ -15,7 +15,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
 
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -43,23 +43,24 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section id="title">
-					<h1>
-						Booker<br/>
-						&amp;&amp;Arrays<br/>
-						&amp;&amp;IE8<br/>
-						&amp;&amp;Standards<br/>
-						&amp;&amp;learningsMakeBenefitUITeam</h1>
+<h1>
+Booker<br/>
+&amp;&amp;Arrays<br/>
+&amp;&amp;IE8<br/>
+&amp;&amp;Standards<br/>
+&amp;&amp;Omnichannel<br/>
+&amp;&amp;learningsMakeBenefitUITeam</h1>
 				</section>
 				<section>
 					<section>
 					<h2>Brain Teaser</h2>
 					<pre>		
-myFilter = function(object){
-	object = object || [];
-	object.filter(function( el ){
+myFilter = function(array){
+	array = array || [];
+	array.filter(function( el ){
 		return el['key']?0:1;
 	})
-	return object;
+	return array;
 }				
 					</pre>
 					<pre class="fragment">		
@@ -84,7 +85,7 @@ myFilter = function(array){
 }
 						</code>
 					</pre>
-					<pre class="fragment">
+					<pre class="">
 						<code class="javascript">
 myFilter = function(Array){
 	Array = Array || [];
@@ -122,10 +123,10 @@ Date => whenFlightLeavesTheGateForDestination
 					</section>
 					<section>
 						<h2>How about this?</h2>
-						<pre class="javascript">
+						<pre class="">
 							<code class="javascript">
 myCollection = function(){
-	return new Array(Array.prototype.slice.call(arguments).concat());
+	return new Array(arguments.concat());**
 }
 myCollection.prototype={
 	myFilter:function(){
@@ -143,7 +144,28 @@ myCollection.myFilter();
 				</section>
 
 				<section>
-					<section>
+					<h3>Is this code IE 8 compatable?</h3>
+						<pre class="">
+							<code class="javascript">
+myCollection = function(){
+	return new Array(arguments.concat());**
+}
+myCollection.prototype={
+	myFilter:function(){
+		var instance = this;
+		instance.filter(function( el ){
+			return el['key1']?0:1;
+		});
+		return instance;
+	}
+}
+myCollection.myFilter();
+							</code>
+						</pre>
+					<h3 class="fragment">Is IE8 Array compatable?</h3>
+				</section>
+
+				<section>
 					<h1>But what about IE 8?</h1>
 					<p class="fragment">Simple?</p>
 					<pre class="fragment"><code>
@@ -152,32 +174,43 @@ $.makeObject($.each(array.filter(el){
 }))	
 					</code></pre>
 						<p class="fragment">10 times per project + 3 more times individually while debugging</p>
-					</section>
-					<section>
+				</section>
+				<section>
 						<h2>How about this?</h2>
 						<pre class="fragment"><code>
 &lt;script src="components/es5shim/es5shim.js"&gt;&lt;/script&gt;
 						</code></pre>
 						<p class="fragment">or, more simply</p>
 						<pre class="fragment"><code>
-&lt;!--[if IE 7]>
-&lt;script src="//apps.jetbluecom/ie8polyfill.js"&gt;&lt;/script&gt;
+&lt;!--[if IE 8]>
+&lt;script src="//apps.jetblue.com/ie8polyfill.js"&gt;&lt;/script&gt;
 &lt; ![endif]-->
 						</code></pre>						
-					</section>
 				</section>
 
-				<section>
-					<h1>A goal of an omnichannel framework should be to take on technical debt &mdash; of thin clients &mdash; so developers can work towards open standards</h1>
-				</section>
 
 
 				<section>
-					
+					<h3>Make IE8 (or any device) open web compatable</h3>
 
+					<p>A goal of an omnichannel framework should be to take on the technical debt of thin clients so developers can work towards open standards</p>
+
+					<p class="fragment"><small>Make it easy to write good code and people will write good code.</small></p>
 				</section>
 
 
+				<section>
+					<h3>As much as we are all leads, we are also the developers of this framework.</h3>
+
+					<h3 class="fragment">We develop the framework that TCS develops on.</h3>
+
+				</section>
+				<section>
+					<h3>The less time TCS spends thinking about device support, the more effective they can be in making apps.</h3>
+					<p class="fragment"><small>Hopefully</small></p>
+				</section>
+
+				<section><h1>UNEXEPECTED END OF INPUT</h1></section>
 
 			</div>
 
