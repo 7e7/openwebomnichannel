@@ -44,8 +44,7 @@
 			<div class="slides">
 				<section id="title">
 <h1>
-Booker<br/>
-&amp;&amp;Arrays<br/>
+Arrays<br/>
 &amp;&amp;IE8<br/>
 &amp;&amp;Standards<br/>
 &amp;&amp;Omnichannel<br/>
@@ -54,79 +53,88 @@ Booker<br/>
 				<section>
 					<section>
 					<h2>Brain Teaser</h2>
-					<pre>		
-myFilter = function(array){
-	array = array || [];
+					<pre>myFilter = function(array){
+	array = array || [{ "key":"default" }];
 	array.filter(function( el ){
 		return el['key']?0:1;
 	})
 	return array;
-}				
-					</pre>
-					<pre class="fragment">		
-myFilter = function(Array){
-	Array = Array || [];
+}</pre>
+					<p class="fragment">vs.</p>
+					<pre class="fragment">myFilter = function(Array){
+	Array = Array || [{ "key":"default" }];
 	Array.filter(function( el ){
 		return el['key']?0:1;
 	})
 	return Array;
-}	
-					</pre>
+}</pre>
 					</section>
 					<section>
-					<pre>
-						<code class="javascript">
-myFilter = function(array){
-	array = array || [];
+					<p>Syntax highlighting: easy mode</p>
+					<pre><code class="javascript">myFilter = function(array){
+	array = array || [{ "key":"default" }];
 	array.filter(function( el ){
 		return el['key']?0:1;
 	})
 	return array;
-}
-						</code>
+}</code>
 					</pre>
-					<pre class="">
-						<code class="javascript">
-myFilter = function(Array){
-	Array = Array || [];
+					<pre><code class="javascript">myFilter = function(Array){
+	Array = Array || [{ "key":"default" }];
 	Array.filter(function( el ){
 		return el['key']?0:1;
 	})
 	return Array;
-}
-						</code>
+}</code>
 					</pre>
+					<p class="fragment">Basically, a nightmare bug</p>
+					</section>
+					<section>
+						<p>A nightmare fix</p>
+						<pre><code class="javascript">myFilter = function(Array){
+	Array = Array || [{ "key":"default" }];
+	Array.filter(function( el ){
+		return el['key']?0:1;
+	})
+	return Array;
+}</code>
+					</pre>
+					<p class="fragment">becomes</p>
+					<pre class="fragment"><code class="javascript">myFilter = function(Array){
+	Array = Array || [{ "key":"default" }];
+	$.each(Array.filter, function( el ){
+		return el['key']?0:1;
+	})
+	return Array;
+}</code>
+					</pre>
+
 					</section>
 				</section>
 				<section>
 					<section>
 					<h2>Maybe lets avoid this?</h2>
 						<pre>
-							<code class="javascript">
-Array => arr
+							<code class="javascript">Array => arr
 Function => fn
-&amp; c&hellip;
-							</code>
+&amp; c&hellip;</code>
 						</pre>
 						<pre class="fragment">
-							<code class="javascript">
-Array => myArray
-Object => valueObject
-							</code>
+							<code class="javascript">Array => arrCollection
+Object => objThis</code>
 						</pre>
 						<pre class="fragment">
-							<code class="javascript">
-Number => sum
-Date => whenFlightLeavesTheGateForDestination
-							</code>
+							<code class="javascript">Number => sum
+Date => whenFlightLeavesTheGateForDestination</code>
 						</pre>
 					</section>
 					<section>
 						<h2>How about this?</h2>
-						<pre class="">
-							<code class="javascript">
-myCollection = function(){
-	return new Array(arguments.concat());**
+						<pre>
+							<code class="javascript">myCollection = function(){
+	return new Array(
+		Array.prototype.slice.call(arguments.concat())
+	);
 }
 myCollection.prototype={
 	myFilter:function(){
@@ -137,18 +145,20 @@ myCollection.prototype={
 		return instance;
 	}
 }
-myCollection.myFilter();
-							</code>
+myCollection.myFilter();</code>
 						</pre>
 					</section>
 				</section>
 
 				<section>
-					<h3>Is this code IE 8 compatable?</h3>
-						<pre class="">
-							<code class="javascript">
-myCollection = function(){
-	return new Array(arguments.concat());**
+					<section>
+					<h3>Is this valid javascript?<span class="fragment"> Yes</span></h3>
+					<p class="fragment">Is this code IE 8 compatable?<span class="fragment"> No</span></h3>
+						<pre>
+							<code class="javascript">myCollection = function(){
+	return new Array(
+		Array.prototype.slice.call(arguments.concat())
+	);
 }
 myCollection.prototype={
 	myFilter:function(){
@@ -159,14 +169,34 @@ myCollection.prototype={
 		return instance;
 	}
 }
-myCollection.myFilter();
-							</code>
+myCollection.myFilter();</code>
 						</pre>
-					<h3 class="fragment">Is IE8 Array compatable?</h3>
+					</section>
+					<section>
+						<h3 class="fragment">Is IE8 Array compatable?<span class="fragment"> No</span></h3>
+						<pre>
+							<code class="javascript">myCollection = function(){
+	return new Array(
+		Array.prototype.slice.call(arguments.concat())
+	);
+}
+myCollection.prototype={
+	myFilter:function(){
+		var instance = this;
+		instance.filter(function( el ){
+			return el['key1']?0:1;
+		});
+		return instance;
+	}
+}
+myCollection.myFilter();</code>
+						</pre>
+					</section>
+					
 				</section>
 
 				<section>
-					<h1>But what about IE 8?</h1>
+					<h1>What is a good practice here?</h1>
 					<p class="fragment">Simple?</p>
 					<pre class="fragment"><code>
 $.makeObject($.each(array.filter(el){
@@ -178,12 +208,12 @@ $.makeObject($.each(array.filter(el){
 				<section>
 						<h2>How about this?</h2>
 						<pre class="fragment"><code>
-&lt;script src="components/es5shim/es5shim.js"&gt;&lt;/script&gt;
+&lt;script src="myapp/components/es5shim/es5shim.js"&gt;&lt;/script&gt;
 						</code></pre>
 						<p class="fragment">or, more simply</p>
 						<pre class="fragment"><code>
 &lt;!--[if IE 8]>
-&lt;script src="//apps.jetblue.com/ie8polyfill.js"&gt;&lt;/script&gt;
+&lt;script src="//apps.mysite.com/ie8polyfill.js"&gt;&lt;/script&gt;
 &lt; ![endif]-->
 						</code></pre>						
 				</section>
@@ -202,20 +232,27 @@ $.makeObject($.each(array.filter(el){
 				<section>
 					<h3>As much as we are all leads, we are also the developers of this framework.</h3>
 
-					<h3 class="fragment">We develop the framework that TCS develops on.</h3>
+					<p class="fragment">We are developing the framework that TCS develops on.</p>
 
 				</section>
 				<section>
-					<h3>The less time TCS spends thinking about device support, the more effective they can be in making apps.</h3>
+					<h3>The less time our vendors (TCS) spend thinking about our device support, the more effective they can be in making apps.</h3>
 					<p class="fragment"><small>Hopefully</small></p>
 				</section>
 
-				<section><h1>UNEXEPECTED END OF INPUT</h1></section>
+				<section>
+					<section id="close">
+						<h1>That is all</h1>
+						<p class="fragment">Uncaught SyntaxError: Unexpected end of input</p>
+					</section>
+					<section id="close">
+						<h1>That is all;</h1>
+					</section>
+				</section>
 
 			</div>
 
 		</div>
-
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
 
