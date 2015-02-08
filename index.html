@@ -131,21 +131,33 @@ Date => whenFlightLeavesTheGateForDestination</code>
 					<section>
 						<h2>How about this?</h2>
 						<pre>
-							<code class="javascript">myCollection = function(){
-	return new Array(
-		Array.prototype.slice.call(arguments.concat())
-	);
-}
-myCollection.prototype={
-	myFilter:function(){
-		var instance = this;
-		instance.filter(function( el ){
+							<code class="javascript">Array.prototype.myFilter = function(){
+		return this.filter(function( el ){
 			return el['key1']?0:1;
 		});
-		return instance;
 	}
-}
-myCollection.myFilter();</code>
+};
+&hellip;
+arr.myFilter();</code>
+						</pre>
+					</section>
+					<section>
+						<h2>Better with a facade?</h2>
+						<pre>
+							<code class="javascript">MyCollection = function(){
+	return new Array(
+		Array.prototype.slice.call(arguments.concat());
+	);
+};
+MyCollection.prototype={
+	myFilter:function(){
+		return this.filter(function( el ){
+			return el['key1']?0:1;
+		});
+	}
+};
+&hellip;
+myCollectionInstance.myFilter();</code>
 						</pre>
 					</section>
 				</section>
@@ -155,42 +167,40 @@ myCollection.myFilter();</code>
 					<h3>Is this valid javascript?<span class="fragment"> Yes</span></h3>
 					<p class="fragment">Is this code IE 8 compatable?<span class="fragment"> No</span></h3>
 						<pre>
-							<code class="javascript">myCollection = function(){
+							<code class="javascript">MyCollection = function(){
 	return new Array(
-		Array.prototype.slice.call(arguments.concat())
+		Array.prototype.slice.call(arguments.concat());
 	);
-}
-myCollection.prototype={
+};
+MyCollection.prototype={
 	myFilter:function(){
-		var instance = this;
-		instance.filter(function( el ){
+		return this.filter(function( el ){
 			return el['key1']?0:1;
 		});
-		return instance;
 	}
-}
-myCollection.myFilter();</code>
+};
+&hellip;
+myCollectionInstance.myFilter();</code>
 						</pre>
 					</section>
 					<section>
 						<h3>A thought technology</h3>
-						<p class="fragment">Is IE8 Array compatable?<span class="fragment"> No</span></p>
+						<p class="fragment">Is IE8 "Array compatable"?<span class="fragment"> No</span></p>
 						<pre>
-							<code class="javascript">myCollection = function(){
+							<code class="javascript">MyCollection = function(){
 	return new Array(
-		Array.prototype.slice.call(arguments.concat())
+		Array.prototype.slice.call(arguments.concat());
 	);
-}
-myCollection.prototype={
+};
+MyCollection.prototype={
 	myFilter:function(){
-		var instance = this;
-		instance.filter(function( el ){
+		return this.filter(function( el ){
 			return el['key1']?0:1;
 		});
-		return instance;
 	}
-}
-myCollection.myFilter();</code>
+};
+&hellip;
+myCollectionInstance.myFilter();</code>
 						</pre>
 					</section>
 					
@@ -200,9 +210,9 @@ myCollection.myFilter();</code>
 					<h1>What is a good practice here?</h1>
 					<p class="fragment">Simple?</p>
 					<pre class="fragment"><code>
-$.makeObject($.each(array.filter(el){
+$.makeArray($.each(arr.filter(el){
 	return el['key']?0:1;
-}))	
+}));
 					</code></pre>
 						<p class="fragment">10 times per project + 3 more times individually while debugging</p>
 				</section>
@@ -227,18 +237,6 @@ $.makeObject($.each(array.filter(el){
 					<p>A goal of an omnichannel framework should be to take on the technical debt of thin clients so developers can work towards open standards</p>
 
 					<p class="fragment"><small>Make it easy to write good code and people will write good code.</small></p>
-				</section>
-
-
-				<section>
-					<h3>As much as we are all leads, we are also the developers of this framework.</h3>
-
-					<p class="fragment">We are developing the framework that TCS develops on.</p>
-
-				</section>
-				<section>
-					<h3>The less time our vendors (TCS) spend thinking about our device support, the more effective they can be in making apps.</h3>
-					<p class="fragment"><small>Hopefully</small></p>
 				</section>
 
 				<section>
